@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+
+  <main role="main">
+    <div class="container mb-3">
+      <section>
+        <h1 class="text-center mt-4">Inicio de Sesión</h1>
+        <br>
+        <form method='POST'>
+          {% csrf_token %}
+          <div class="container-fluid">
+            <div class="row justify-content-center mt-1">
+              <!--Campos del login-->
+              <div class="col-sm-12 col-md-6">
+                <!--Email-->
+                <div class="mb-3 text-danger">
+                  <label for="username" class="form-label fw-bold text-black">Usuario</label>
+                  <input type="username" class="form-control" id="email" name="email" placeholder="ej: jwick14@gmail.com" required>
+                </div>
+                <!--Contraseña-->
+                <div class="mb-3 text-danger">
+                  <label for="password" class="form-label fw-bold text-black">Contraseña</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <!--Botón para enviar los datos al servidor de la BD-->
+                <button type="submit" class="btn btn-primary mb-3">Iniciar Sesión</button>
+                <p>¿Aún no tienes una cuenta? <a class="enlace" href="/registro.html">Registrate</a></p>
+              </div>
+            </div>
+          </div>
+        </form>
+        <a href="index_usuario.html"><h1 class="text-center mt-4">Simulación CLIENTE</h1></a>
+        <a href="index_admin.html"><h1 class="text-center mt-4">Simulación ADMINISTRADOR</h1></a>
+      </section>
+    </div>
+  </main>
+  <script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+  <script src="js/validador_login.js"></script>
+</div>
+{% endblock %}

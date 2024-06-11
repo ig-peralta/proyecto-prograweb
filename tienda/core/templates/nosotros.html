@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+  <div class="d-flex flex-column align-items-center mt-4 mb-4">
+    <!--TITLE-->
+    <div class="me-auto">
+      <h1 class="ms-5 mb-0 mt-3">Nosotros</h1>
+    </div>
+    <!--TITLE-->
+    <!--PARAGRAPH-->
+    <div class="m-5 mt-4">
+      <p align="justify">
+        En Gaming, entendemos la pasión que hay detrás de cada videojuego. Desde los clásicos atemporales hasta las últimas novedades, nos apasiona ofrecerte una experiencia de compra única para que puedas disfrutar al máximo de tu tiempo de juego.
+        <br>
+        <br>
+        Nuestra historia comenzó con un equipo de entusiastas de los videojuegos que soñaban con crear un espacio donde los jugadores pudieran encontrar todo lo que necesitan bajo un mismo techo. Desde entonces, nos hemos dedicado a seleccionar cuidadosamente los mejores títulos, consolas y accesorios para satisfacer las necesidades de nuestra creciente comunidad de jugadores.
+        <br>
+        <br>
+        En Gaming, nos enorgullece no solo ofrecerte una amplia gama de productos de alta calidad, sino también brindarte un servicio excepcional. Nuestro equipo está formado por expertos apasionados que están aquí para ayudarte a encontrar el juego perfecto o resolver cualquier duda que puedas tener.
+        <br>
+        <br>
+        Además de ser tu destino para comprar videojuegos, también nos esforzamos por ser un lugar donde los jugadores puedan conectarse, compartir sus experiencias y descubrir nuevas aventuras juntos. Organizamos eventos, torneos y actividades especiales para que puedas conocer a otros jugadores y formar parte de nuestra vibrante comunidad.
+        <br>
+        <br>
+        En Gaming, creemos que los videojuegos son más que solo entretenimiento: son una forma de arte, una fuente de inspiración y una plataforma para la creatividad. Estamos comprometidos a seguir impulsando esta industria y a ser tu compañero de confianza en cada paso del camino.
+        <br>
+        <br>
+        Gracias por elegir Gaming. ¡Esperamos poder acompañarte en todas tus aventuras virtuales!
+        <br>
+        <br>
+        ¡Nos vemos en el mundo de los videojuegos!
+        <br>
+        <br>
+        El equipo de Gaming
+      </p>
+    </div>
+    <!--PARAGRAPH-->
+    <div class="ps-4 pe-4">
+      <div class="card-group text-center ps-5 pe-5 d-flex flex-wrap justify-content-around w-100">
+        <div class="card border-0 mb-3" style="max-width:13rem; min-width: 12rem;">
+          <img src={% static 'img/camila_leon.jpg' %} class="card-img-top rounded-circle ms-auto me-auto" alt="..." style="max-width:80%;height:auto;aspect-ratio: 1 / 1;object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">Camila León</h5>
+            <p class="card-text fs-6">Gerente general</p>
+          </div>
+        </div>
+        <div class="card border-0 mb-3" style="max-width:13rem; min-width: 12rem;">
+          <img src={% static 'img/joaquin_morales.png' %} class="card-img-top rounded-circle ms-auto me-auto" alt="..." style="max-width:80%;height:auto;aspect-ratio: 1 / 1;object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">Joaquín Morales</h5>
+            <p class="card-text fs-6">Encargado de marketing</p>
+          </div>
+        </div>
+        <div class="card border-0 mb-3" style="max-width:13rem; min-width: 12rem;">
+          <img src={% static 'img/andres_landaeta.png' %} class="card-img-top rounded-circle ms-auto me-auto" alt="..." style="max-width:80%;height:auto;aspect-ratio: 1 / 1;object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">Andres Landaeta</h5>
+            <p class="card-text fs-6">Atención de Clientes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
