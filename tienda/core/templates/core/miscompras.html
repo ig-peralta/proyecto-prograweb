@@ -1,0 +1,64 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<div class="d-flex flex-column align-items-center mt-4 text-nowrap flex-nowrap" style="height:100%">
+  <!--TITLE-->
+  <div class="w-75">
+    <h1 class="mb-5">Mis compras anteriores</h1>
+  </div>
+  <!--TITLE-->
+  <div class="w-75 overflow-auto" style="height:100%">
+    <!--MAIN TABLE-->
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nro Boleta</th>
+          <th scope="col">Fecha venta</th>
+          <th scope="col">Fecha despacho</th>
+          <th scope="col">Fecha entrega</th>
+          <th scope="col">Monto total</th>
+          <th scope="col">Estado actual</th>
+          <th scope="col">Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>001</td>
+          <td>2024-04-01</td>
+          <td>2024-04-02</td>
+          <td>2024-04-05</td>
+          <td>$150.000</td>
+          <td>Entregado</td>
+          <td class="pe-0">
+            <a href="/boleta.html" class="btn btn-primary p-1 fs-6">Ver boleta</a>
+          </td>
+        </tr>
+        <tr>
+          <td>002</td>
+          <td>2024-04-02</td>
+          <td>2024-04-03</td>
+          <td>2024-04-06</td>
+          <td>$200.000</td>
+          <td>En tránsito</td>
+          <td class="pe-0">
+            <a href="/boleta.html" class="btn btn-primary p-1 fs-6">Ver boleta</a>
+          </td>
+        </tr>
+        <tr>
+          <td>003</td>
+          <td>2024-04-03</td>
+          <td>2024-04-04</td>
+          <td>2024-04-07</td>
+          <td>$100.000</td>
+          <td>En preparación</td>
+          <td class="pe-0">
+            <a href="/boleta.html" class="btn btn-primary p-1 fs-6">Ver boleta</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!--MAIN TABLE-->
+  </div>
+</div>
+{% endblock content %}
+  

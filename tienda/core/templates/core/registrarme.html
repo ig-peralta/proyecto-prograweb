@@ -1,0 +1,60 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<main role="main" style="min-height: 100vh;">
+  <div class="container mb-3">
+    <section>
+      <h1 class="text-center mt-3">Registro de Cliente</h1>
+      <br />
+      <form id="form" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-12 col-md-4">
+            {{form_usuario|as_bootstrap_form:'help_text_visible=False'}}
+          </div>
+          <div class="col-sm-12 col-md-5">
+    
+            {{form_perfil|as_bootstrap_form}}
+    
+          </div>
+    
+          <!-- AREA DE IMAGEN DE PERFIL -->
+          <div class="col-sm-12 col-md-3 text-center">
+            <div class="row">
+              <!-- AREA DE CUADRO DE IMAGEN: Muestra la Imagen de perfil -->
+              <div class="col-sm-12" style="height: 220px">
+                <img id="cuadro-imagen" class="user-image" src="{% static 'img/user_profile.png' %}">
+              </div>
+            </div>
+          </div>
+    
+        </div>
+    
+        <!-- AREA DE BOTONES -->
+        <div class="mt-2 mb-3 text-center">
+          
+          <button type="submit"> Registrarme </button>
+          
+          <!-- Boton para "Limpiar formulario" (VER COMENTARIO "BOTON LIMPIAR FORMULARIO" en script.js) -->
+          <button type="reset" id="limpiar_formulario"> Limpiar </button>
+          
+          <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
+          <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();"> Seleccionar imagen </button>  
+          
+          <!-- Botón para "Crear usuario de prueba" (VER COMENTARIO "CREAR USUARIO DE PRUEBA" en registrarme.js) -->
+          <button id="crear_usuario_prueba"> Crear usuario de prueba </button>
+    
+        </div>
+    
+      </form>
+    </section>
+  </div>
+</main>
+{% endblock content %}
+
+{% block script %}
+  <script src="{% static 'js/registrarme.js' %}"></script>
+{% endblock script %}

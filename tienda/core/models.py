@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-#from core.templatetags.custom_filters import formatear_dinero
+from core.templatetags.custom_filters import formatear_dinero
 from django.db import models
 from django.db.models import Min
 from django.db import connection
@@ -15,7 +15,7 @@ class Categoria(models.Model):
         ordering = ['nombre']
     
     def __str__(self):
-        return f'{self.id} {self.nombre}'
+        return f'{self.nombre}'
     
     def acciones():
         return {
@@ -26,7 +26,7 @@ class Categoria(models.Model):
 class Producto(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING, verbose_name='Categoría')
     nombre = models.CharField(max_length=100, blank=False, null=False, verbose_name='Nombre producto')
-    descripcion = models.CharField(max_length=400, blank=False, null=False, verbose_name='Descripción')
+    descripcion = models.CharField(max_length=800, blank=False, null=False, verbose_name='Descripción')
     precio = models.IntegerField(blank=False, null=False, verbose_name='Precio')
     descuento_subscriptor = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(100)],
@@ -56,8 +56,8 @@ class Producto(models.Model):
             'accion_eliminar': 'eliminar el Producto',
             'accion_actualizar': 'actualizar el Producto'
         }
-
-class Perfil(models.Model):
+ 
+class Perfil(models.Model): 
     USUARIO_CHOICES = [
         ('Cliente', 'Cliente'),
         ('Administrador', 'Administrador'),
@@ -72,7 +72,7 @@ class Perfil(models.Model):
         verbose_name='Tipo de usuario'
     )
     rut = models.CharField(max_length=15, blank=False, null=False, verbose_name='RUT')
-    direccion = models.CharField(max_length=400, blank=False, null=False, verbose_name='Dirección')
+    direccion = models.CharField(max_length=800, blank=False, null=False, verbose_name='Dirección')
     subscrito = models.BooleanField(blank=False, null=False, verbose_name='Subscrito')
     imagen = models.ImageField(upload_to='perfiles/', blank=False, null=False, verbose_name='Imagen')
     
@@ -126,7 +126,7 @@ class Carrito(models.Model):
         ordering = ['cliente', 'producto']
 
     def __str__(self):
-        return f'{self.id} Carrito de {self.cliente.usuario.first_name} {self.cliente.usuario.last_name} (Producto {self.producto.categoria.nombre} - {self.producto.nombre} - {self.precio})'
+        return f'{self.id} Carrito de {self.cliente.usuario.first_name} {self.cliente.usuario.last_name} (Producto {self.producto.categoria.nombre} - {self.producto.nombre} - {formatear_dinero(self.precio)})'
     
     def acciones():
         return {
@@ -157,7 +157,7 @@ class Boleta(models.Model):
         verbose_name_plural = "Boletas"
 
     def __str__(self):
-        return f'Boleta {self.nro_boleta} de {self.cliente.usuario.first_name} {self.cliente.usuario.last_name} por {self.total_a_pagar}'
+        return f'Boleta {self.nro_boleta} de {self.cliente.usuario.first_name} {self.cliente.usuario.last_name} por {formatear_dinero(self.total_a_pagar)}'
     
     def acciones():
         return {
@@ -220,7 +220,7 @@ class DetalleBoleta(models.Model):
     def __str__(self):
         minimo_id = DetalleBoleta.objects.filter(boleta_id=self.boleta.nro_boleta).aggregate(minimo_id=Min('id'))['minimo_id']
         nro_item = self.id - minimo_id + 1
-        return f'Boleta {self.boleta.nro_boleta} Item {nro_item} {self.bodega.producto.nombre} - {self.precio_a_pagar}'
+        return f'Boleta {self.boleta.nro_boleta} Item {nro_item} {self.bodega.producto.nombre} - {formatear_dinero(self.precio_a_pagar)}'
     
     def acciones():
         return {
