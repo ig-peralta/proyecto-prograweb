@@ -1,5 +1,7 @@
 {% extends "core/base.html" %}
 {% load static %}
+{% load custom_filters %}
+
 {% block content %}
 <div class="d-flex flex-column mt-4 text-nowrap flex-nowrap" style="height: 100%;">
   <!--TITLE-->
@@ -7,17 +9,31 @@
     <h1 class="mb-4 mb-md-0">Detalle de boleta 515</h1>
     <div class="d-flex justify-content-center" style="max-width: 800px;">
       <div class="d-flex flex-column w-100 mx-5 mt-md-0 mt-4 position-relative">
-        <div class="progress" style="height: 5px;">
-          <div class="progress-bar w-75" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        <button type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">1</button>
-        <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">2</button>
-        <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">3</button>
-        <div class="d-flex flex-row flex-nowrap justify-content-between mt-4">
-          <div class="fw-bold me-3">Despachado</div>
-          <div class="fw-bold me-3">En tránsito</div>
-          <div class="fw-bold">Entregado</div>
-        </div>
+        {% if boleta.estado == 'Anulado' %}
+          <h2 class="text-danger">ANULADA</h2>
+        {% else %}
+          <div class="progress" style="height: 5px;">
+            <div class="progress-bar 
+            {% if boleta.estado == 'Vendido' %}
+              w-0
+            {% elif boleta.estado == 'Despachado' %}
+              w-50
+            {% else %}
+              w-100
+            {% endif %}
+            " 
+            role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+            ></div>
+          </div>
+          <button type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">1</button>
+          <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">2</button>
+          <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;">3</button>
+          <div class="d-flex flex-row flex-nowrap justify-content-between mt-4">
+            <div class="fw-bold me-3">Vendido</div>
+            <div class="fw-bold me-3">Despachado</div>
+            <div class="fw-bold">Entregado</div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -38,36 +54,18 @@
         </tr>
       </thead>
       <tbody>
+        {% for item in items %}
         <tr>
-          <td>PS5</td>
-          <td>Smartphone</td>
-          <td>$50.000</td>
-          <td>15%</td>
-          <td>10%</td>
-          <td>25%</td>
-          <td>$12500</td>
-          <td>$37500</td>
+          <td>{{item.bodega.producto.categoria.nombre}}</td>
+          <td>{{item.bodega.producto.nombre}}</td>
+          <td>{{item.precio|formatear_dinero}}</td>
+          <td>{{item.descuento_subscriptor|formatear_porcentaje}}</td>
+          <td>{{item.descuento_oferta|formatear_porcentaje}}</td>
+          <td>{{item.descuento_total|formatear_porcentaje}}</td>
+          <td>{{item.descuentos|formatear_dinero}}</td>
+          <td>{{item.precio_a_pagar|formatear_dinero}}</td>
         </tr>
-        <tr>
-          <td>PS5</td>
-          <td>God of War: Ragnarok</td>
-          <td>$60.000</td>
-          <td>10%</td>
-          <td>5%</td>
-          <td>15%</td>
-          <td>$9000</td>
-          <td>$51000</td>
-        </tr>
-        <tr>
-          <td>PS4</td>
-          <td>Gran Turismo 6</td>
-          <td>$40.000</td>
-          <td>5%</td>
-          <td>3%</td>
-          <td>8%</td>
-          <td>$3200</td>
-          <td>$36800</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
     <!--MAIN TABLE-->
@@ -83,7 +81,7 @@
         </td>
         <td>
           <div class="col border border-2 border-dark text-end ms-2 ps-5 pe-1">
-            $101493
+            {{boleta.monto_sin_iva|formatear_dinero}}
           </div>
         </td>
       </tr>
@@ -95,7 +93,7 @@
         </td>
         <td>
           <div class="col border border-2 border-dark text-end ms-2 pe-1">
-            $23807
+            {{boleta.iva|formatear_dinero}}
           </div>
         </td>
       </tr>
@@ -107,7 +105,7 @@
         </td>
         <td>
           <div class="col border border-2 border-dark text-end ms-2 pe-1">
-            $125300
+            {{boleta.total_a_pagar|formatear_dinero}}
           </div>
         </td>
       </tr>

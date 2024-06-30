@@ -38,7 +38,9 @@ def inicio(request):
     for registro in registros:
         productos.append(obtener_info_producto(registro.id))
 
-    context = { 'productos': productos }
+    context = { 
+        'productos': productos, 
+        }
     return render(request, 'core/inicio.html', context)
 
 def ficha(request, producto_id):
@@ -74,7 +76,6 @@ def ingresar(request):
             show_form_errors(request, [form])
 
     if request.method == "GET":
-
         form = IngresarForm()
 
     context = {
@@ -95,60 +96,92 @@ def salir(request):
 @user_passes_test(es_usuario_anonimo)
 def registrarme(request):
     if request.method == 'POST':
+        form_usuario = RegistroUsuarioForm(request.POST)
+        if form_usuario.is_valid() :
+            try:
+                form_usuario.save()
+            except:
+                messages.error(request, 'Error al crear usuario')
+                return redirect(registrarme)
+            user= authenticate(username=request.POST.get('username'), password=request.POST.get('password1'))
+            login(request, user)
+        else:
+            messages.error(request, 'Error, formulario incorrecto')
+            return redirect(registrarme)
         
-        # CREAR: usar RegistroUsuarioForm para obtener datos del formulario
-        # CREAR: usar RegistroPerfilForm para obtener datos del formulario
-        # CREAR: lógica para crear usuario
-        pass
+        form_perfil = RegistroPerfilForm(request.POST)
+        if form_perfil.is_valid():
+            perfil = form_perfil.save(commit=False)
+            perfil.usuario = request.user
+            try:
+                perfil.save()
+            except:
+                usuario = User.objects.get(id=request.user.id)
+                logout(request)
+                usuario.delete()
+                messages.error(request, 'Error al crear perfil')
+                return redirect(registrarme)
+            messages.success(request, '¡Cuenta creada con éxito!\nBienvenido a Gaming')
+            return redirect(inicio)
+        else:
+            messages.error(request, 'Error, formulario incorrecto')
+            registrarme(registrarme)
+
     if request.method == 'GET':
         form_usuario = RegistroUsuarioForm() 
         form_perfil = RegistroPerfilForm()
+
     context = {
         'form_usuario' : form_usuario,
         'form_perfil' : form_perfil,
     }
-
     return render(request, 'core/registrarme.html', context)
 
 @login_required
 def misdatos(request):
+    usuario = request.user
+    form_usuario = UsuarioForm(instance=usuario)
+    form_perfil = RegistroPerfilForm(instance=usuario.perfil)
 
     if request.method == 'POST':
-        
-        # CREAR: un formulario UsuarioForm para recuperar datos del formulario asociados al usuario actual
-        # CREAR: un formulario RegistroPerfilForm para recuperar datos del formulario asociados al perfil del usuario actual
-        # CREAR: lógica para actualizar los datos del usuario
-        pass
+        form_usuario = UsuarioForm(request.POST, instance=usuario)
+        form_perfil = RegistroPerfilForm(request.POST, instance=usuario.perfil)
+        if form_usuario.is_valid() and form_perfil.is_valid():
+            try:
+                form_usuario.save()
+                form_perfil.save()
+                messages.success(request, '¡Datos actualizados con éxito!')
+                return redirect(misdatos)
+            except:
+                messages.error(request, 'Error al actualizar datos')
+                return redirect(misdatos)
+        else:
+            messages.error(request, 'Error, mal formulario')
+            return redirect(misdatos)
 
-    if request.method == 'GET':
-
-        # CREAR: un formulario UsuarioForm con los datos del usuario actual
-        # CREAR: un formulario RegistroPerfilForm con los datos del usuario actual
-        pass
-    
-    # CREAR: variable de contexto para enviar formulario de usuario y perfil
-    context = { }
-
+    context = {
+        'form_usuario' : form_usuario,
+        'form_perfil' : form_perfil,
+        'usuario' : usuario
+    }
     return render(request, 'core/misdatos.html', context)
 
 @login_required
 def boleta(request, nro_boleta):
-
-    # CREAR: lógica para ver la boleta
-    
-    # CREAR: variable de contexto para enviar boleta y detalle de la boleta
-    context = { }
-
+    items = DetalleBoleta.objects.filter(boleta=nro_boleta)
+    boleta = Boleta.objects.get(nro_boleta=nro_boleta)
+    context = {
+        'items' : items,
+        'boleta' : boleta
+    }
     return render(request, 'core/boleta.html', context)
 
 @user_passes_test(es_personal_autenticado_y_activo)
 def ventas(request):
-    
-    # CREAR: lógica para ver las ventas
-
-    # CREAR: variable de contexto para enviar historial de ventas
-    context = { }
-
+    historial = Boleta.objects.all()
+    context = {
+        'historial' : historial
+    }
     return render(request, 'core/ventas.html', context)
 
 @user_passes_test(es_personal_autenticado_y_activo)
@@ -212,6 +245,7 @@ def bodega(request):
             'bodega_id': registro.id,
             'nombre_categoria': registro.producto.categoria.nombre,
             'nombre_producto': registro.producto.nombre,
+            'precio_producto': registro.producto.precio,
             'estado': 'Vendido' if vendido else 'En bodega',
             'imagen': registro.producto.imagen,
         }
@@ -224,15 +258,11 @@ def bodega(request):
     
     return render(request, 'core/bodega.html', context)
 
-
 @user_passes_test(es_personal_autenticado_y_activo)
 def obtener_productos(request):
-    # La vista obtener_productos la usa la pagina "Administracion de bodega", para
-    # filtrar el combobox de productos cuando el usuario selecciona una categoria
-    
-    # CREAR: Un JSON para devolver los productos que corresponden a la categoria
-
-    data = []
+    categoria_id = request.GET.get('categoria_id')
+    productos = Producto.objects.filter(categoria=categoria_id)
+    data = [{'nombre' : producto.nombre, 'imagen' : producto.imagen.url} for producto in productos]
     return JsonResponse(data, safe=False)
 
 @user_passes_test(es_personal_autenticado_y_activo)
@@ -246,11 +276,13 @@ def eliminar_producto_en_bodega(request, bodega_id):
 
 @user_passes_test(es_cliente_autenticado_y_activo)
 def miscompras(request):
-
+    historial = Boleta.objects.filter(cliente=request.user.perfil)
     # CREAR: lógica para ver las compras del cliente
 
     # CREAR: variable de contexto para enviar el historial de compras del cliente
-    context = { }
+    context = {
+        'historial' : historial
+    }
 
     return render(request, 'core/miscompras.html', context)
 
@@ -423,9 +455,7 @@ def vaciar_carrito(request):
 
 @login_required
 def mipassword(request):
-
     if request.method == 'POST':
-
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()

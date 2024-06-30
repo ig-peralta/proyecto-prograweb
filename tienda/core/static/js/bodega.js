@@ -60,7 +60,7 @@ $(document).ready(function() {
     },
   });
 
-  var sin_imagen = '/static/core/img/sin-imagen.png';
+  var sin_imagen = '/static/img/sin-imagen.png';
 
   // COMBOBOX DEPENDIENTES PARA CATEGORIA Y PRODUCTO
   $("#id_categoria").change(function() {
