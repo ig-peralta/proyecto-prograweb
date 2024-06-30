@@ -40,7 +40,7 @@ class Producto(models.Model):
         null=False,
         verbose_name='% Descuento oferta'
     )
-    imagen = models.ImageField(upload_to='productos/', blank=False, null=False, verbose_name='Imagen')
+    imagen = models.ImageField(upload_to='productos/', blank=False, null=False, verbose_name='Imagen', default='productos/sin-imagen.png')
     
     class Meta:
         db_table = 'Producto'

@@ -27,6 +27,14 @@ class ProductoForm(ModelForm):
     class Meta:
         model = Producto
         fields = '__all__'
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 4, 'cols': 80}),
+            'imagen' : forms.FileInput()
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super(ProductoForm, self).__init__(*args, **kwargs)
+        self.fields['imagen'].required = False
 
 class BodegaForm(Form):
     categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), label='Categoría')

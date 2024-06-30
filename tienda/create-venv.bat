@@ -8,4 +8,3 @@ call cd ..
 call cd ..
 call cd tienda
 call pip install -r requirements.txt
-call code .

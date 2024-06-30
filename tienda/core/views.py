@@ -186,56 +186,146 @@ def ventas(request):
 
 @user_passes_test(es_personal_autenticado_y_activo)
 def productos(request, accion, id):
-    
+    productos = Producto.objects.all()
+    id = int(id)
+    if id == 0:
+        form = ProductoForm()
+    else:
+        producto = Producto.objects.get(id=id)
+        form = ProductoForm(instance=producto)
+    if accion == 'eliminar':
+        try:
+            producto.delete()
+            messages.success(request, '¡Producto eliminado con éxito!')
+            return redirect('productos', accion='crear', id = '0')
+        except:
+            messages.error(request, 'Error al eliminar producto')
+            return redirect('productos', accion='crear', id = '0')
     if request.method == 'POST':
-        
-        # CREAR: lógica para crear y actualizar un producto
-        pass
-
-    if request.method == 'GET':
-
-        # CREAR: lógica para preparar la página para la acción de: crear, actualizar y eliminar un producto
-        pass
+        if accion == 'crear':
+            form = ProductoForm(request.POST)
+            if form.is_valid():
+                try:
+                    form.save()
+                    messages.success(request, '¡Producto creado con éxito!')
+                    return redirect('productos', accion='crear', id = '0')
+                except:
+                    messages.error(request, 'Error al crear producto')
+                    return redirect('productos', accion='crear', id = '0')
+            else:
+                messages.error(request, 'Error, mal formulario')
+                return redirect('productos', accion='crear', id='0')
+        elif accion == 'actualizar':
+            form = ProductoForm(request.POST, instance=producto)
+            if form.is_valid():
+                try:
+                    form.save()
+                    messages.success(request, '¡Producto actualizado con éxito!')
+                    return redirect('productos', accion='crear', id = '0')
+                except:
+                    messages.error(request, 'Error al actualizar producto')
+                    return redirect('productos', accion='crear', id = '0')
+            else:
+                messages.error(request, 'Error, mal formulario')
+                return redirect('productos', accion='crear', id='0')
+        else:
+            messages.error(request, 'Error, mala petición')
+            return redirect('productos', accion='crear', id = '0')
 
     # CREAR: variable de contexto para enviar el formulario y todos los productos
-    context = { }
+    context = {
+        'form' : form,
+        'productos' : productos,
+    }
 
     return render(request, 'core/productos.html', context)
 
 @user_passes_test(es_personal_autenticado_y_activo)
 def usuarios(request, accion, id):
-    
-    # CREAR: variables de usuario y perfil
-
+    usuarios = User.objects.all()
+    id = int(id)
+    if id == 0:
+        form_usuario = UsuarioForm()
+        form_perfil = PerfilForm()
+    else:
+        usuario = User.objects.get(id=id)
+        perfil = Perfil.objects.get(usuario=usuario)
+        form_usuario = UsuarioForm(instance=usuario)
+        form_perfil = PerfilForm(instance=perfil)
+    if accion == 'eliminar':
+        try:
+            usuario.delete()
+            perfil.delete()
+            messages.success(request, '¡Usuario eliminado con éxito!')
+            return redirect('usuarios', accion='crear', id = '0')
+        except:
+            messages.error(request, 'Error al eliminar usuarios')
+            return redirect('usuarios', accion='crear', id = '0')
     if request.method == 'POST':
-
-        # CREAR: un formulario UsuarioForm para recuperar datos del formulario asociados al usuario
-        # CREAR: un formulario PerfilForm para recuperar datos del formulario asociados al perfil del usuario
-        # CREAR: lógica para actualizar los datos del usuario
-        pass
-    
-    if request.method == 'GET':
-
-        if accion == 'eliminar':
-            # CREAR: acción de eliminar un usuario
-            pass
+        if accion == 'crear':
+            form_usuario = UsuarioForm(request.POST)
+            form_perfil = PerfilForm(request.POST)
+            if form_usuario.is_valid() and form_perfil.is_valid():
+                try:
+                    usuario = form_usuario.save(commit=False)
+                    perfil = form_perfil.save(commit=False)
+                    perfil.usuario = usuario
+                    usuario.save()
+                    perfil.save()
+                    messages.success(request, 'Usuario creado con éxito!')
+                    return redirect('usuarios', accion='crear', id = '0')
+                except:
+                    messages.error(request, 'Error al crear usuario')
+                    return redirect('usuarios', accion='crear', id = '0')
+            else:
+                messages.error(request, 'Error, mal formulario')
+        elif accion == 'actualizar':
+            form_usuario = UsuarioForm(request.POST, instance=usuario)
+            form_perfil = PerfilForm(request.POST, instance=usuario)
+            if form_usuario.is_valid() and form_perfil.is_valid():
+                try:
+                    form_usuario.save()
+                    form_perfil.save()
+                    messages.success(request, 'Usuario actualizado con éxito!')
+                    return redirect('usuarios', accion='crear', id = '0')
+                except:
+                    messages.error(request, 'Error al actualizar usuario')
+                    return redirect('usuarios', accion='crear', id = '0')
+            else:
+                messages.error(request, 'Error, mal formulario')
+                return redirect('usuarios', accion='crear', id = '0')
         else:
-            # CREAR: un formulario UsuarioForm asociado al usuario
-            # CREAR: un formulario PerfilForm asociado al perfil del usuario
-            pass
-
+            messages.error(request, 'Error, mala petición')
+            return redirect('usuarios', accion='crear', id = '0')
     # CREAR: variable de contexto para enviar el formulario de usuario, formulario de perfil y todos los usuarios
-    context = { }
+    context = {
+        'form_usuario' : form_usuario,
+        'form_perfil' : form_perfil,
+        'usuarios' : usuarios,
+    }
 
     return render(request, 'core/usuarios.html', context)
 
 @user_passes_test(es_personal_autenticado_y_activo)
 def bodega(request):
-
     if request.method == 'POST':
-
-        # CREAR: acciones para agregar productos a la bodega
-        pass
+        try:
+            id_producto = int(request.POST.get('producto'))
+            cantidad = int(request.POST.get('cantidad'))
+        except:
+            messages.error(request, 'Error, mal formulario')
+            return redirect(bodega)
+        try:
+            producto = Producto.objects.get(id=id_producto)
+            count = 0
+            for _ in range(cantidad):
+                producto_bodega = Bodega(producto=producto)
+                producto_bodega.save()
+                count += 1
+            messages.success(request, '¡Productos agregados con éxito!')
+        except:
+            messages.error(request, f'Error, se agregaron {count} productos')
+            return redirect(bodega)
 
     registros = Bodega.objects.all()
     lista = []
@@ -262,36 +352,28 @@ def bodega(request):
 def obtener_productos(request):
     categoria_id = request.GET.get('categoria_id')
     productos = Producto.objects.filter(categoria=categoria_id)
-    data = [{'nombre' : producto.nombre, 'imagen' : producto.imagen.url} for producto in productos]
+    data = [{'id' : producto.id, 'nombre' : producto.nombre, 'imagen' : producto.imagen.url} for producto in productos]
     return JsonResponse(data, safe=False)
 
 @user_passes_test(es_personal_autenticado_y_activo)
 def eliminar_producto_en_bodega(request, bodega_id):
-    # La vista eliminar_producto_en_bodega la usa la pagina "Administracion de bodega", 
-    # para eliminar productos que el usuario decidio sacar del inventario
-
-    # CREAR: lógica para eliminar un producto de la bodega
-
-    return redirect(bodega)
+    try:
+        bodega_id = int(bodega_id)
+        producto_bodega = Bodega.objects.get(id=bodega_id)
+        producto_bodega.delete()
+        messages.success(request, '¡Producto de bodega eliminado con éxito!')
+        return redirect(bodega)
+    except:
+        messages.error(request, 'Error al eliminar producto de bodega')
+        return redirect(bodega)
 
 @user_passes_test(es_cliente_autenticado_y_activo)
 def miscompras(request):
     historial = Boleta.objects.filter(cliente=request.user.perfil)
-    # CREAR: lógica para ver las compras del cliente
-
-    # CREAR: variable de contexto para enviar el historial de compras del cliente
     context = {
         'historial' : historial
     }
-
     return render(request, 'core/miscompras.html', context)
-
-
-# ***********************************************************************
-# FUNCIONES Y VISTAS AUXILIARES QUE SE ENTREGAN PROGRAMADAS AL ALUMNO
-# ***********************************************************************
-
-# VISTA PARA CAMBIAR ESTADO DE LA BOLETA
 
 @user_passes_test(es_personal_autenticado_y_activo)
 def cambiar_estado_boleta(request, nro_boleta, estado):

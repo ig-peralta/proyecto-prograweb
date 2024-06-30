@@ -13,7 +13,7 @@
         <div class="d-flex">
           <div class="d-flex flex-column w-75">
             {{ form|as_bootstrap_form }}
-            <button class="btn btn-primary mb-3 ms-auto mt-2" type="submit">Guardar</button>
+            <button class="btn btn-success mb-3 px-4 ms-auto mt-2" type="submit">Guardar</button>
           </div>
           <img id="cuadro-imagen" src="{% static 'img/sin-imagen.png' %}" class="w-25 ms-3">
         </div>
@@ -52,7 +52,7 @@
                         class="btn btn-danger btn-sm"> Eliminar </a>
                 {% else %}
                     <a href="{% url 'eliminar_producto_en_bodega' producto.bodega_id %}" 
-                        class="btn btn-primary btn-sm disabled"> Eliminar </a>
+                        class="btn btn-danger btn-sm disabled"> Eliminar </a>
                 {% endif %}
               </td>
             </tr>
