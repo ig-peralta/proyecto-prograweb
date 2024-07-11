@@ -75,7 +75,7 @@ class Perfil(models.Model):
     rut = models.CharField(max_length=15, blank=False, null=False, verbose_name='RUT')
     direccion = models.CharField(max_length=800, blank=False, null=False, verbose_name='Dirección')
     subscrito = models.BooleanField(blank=False, null=False, verbose_name='Subscrito')
-    imagen = models.ImageField(upload_to='perfiles/', blank=False, null=False, verbose_name='Imagen', default='perfiles/user_profile.png')
+    imagen = models.ImageField(upload_to='perfiles/', blank=False, null=False, verbose_name='Imagen', default='perfiles/user_profile.png') #esto no tenía default
     
     class Meta:
         db_table = 'Perfil'
