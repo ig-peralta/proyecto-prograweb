@@ -4,25 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Categoria, Producto, Perfil
 
-# *********************************************************************************************************#
-#                                                                                                          #
-# INSTRUCCIONES PARA EL ALUMNO, PUEDES SEGUIR EL VIDEO TUTORIAL, COMPLETAR EL CODIGO E INCORPORAR EL TUYO: #
-#                                                                                                          #
-# https://drive.google.com/drive/folders/1ObwMnpKmCXVbq3SMwJKlSRE0PCn0buk8?usp=drive_link                  #
-#                                                                                                          #
-# *********************************************************************************************************#
 
-# PARA LA PAGINA MANTENEDOR DE PRODUCTOS:
-# Crea ProductoForm como una clase que hereda de ModelForm
-# asocialo con el modelo Producto
-# muestra todos los campos
-# crea 2 widgets para:
-#   - la descripción del producto como TextArea
-#   - el botón de cargar imagen como FileInput y 
-#     escóndelo para reemplazarlo por otro acorde 
-#     con tu diseño gráfico
-# renombra las siguientes etiquetas para que ocupen menos
-# espacio en la página: 'Nombre', 'Subscriptor(%)' y 'Oferta(%)'
 class ProductoForm(ModelForm):
     class Meta:
         model = Producto

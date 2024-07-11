@@ -109,7 +109,7 @@ def registrarme(request):
             messages.error(request, 'Error, formulario incorrecto')
             return redirect(registrarme)
         
-        form_perfil = RegistroPerfilForm(request.POST)
+        form_perfil = RegistroPerfilForm(request.POST, files=request.FILES)
         if form_perfil.is_valid():
             perfil = form_perfil.save(commit=False)
             perfil.usuario = request.user
@@ -145,7 +145,7 @@ def misdatos(request):
 
     if request.method == 'POST':
         form_usuario = UsuarioForm(request.POST, instance=usuario)
-        form_perfil = RegistroPerfilForm(request.POST, instance=usuario.perfil)
+        form_perfil = RegistroPerfilForm(request.POST, files=request.FILES, instance=usuario.perfil)
         if form_usuario.is_valid() and form_perfil.is_valid():
             try:
                 form_usuario.save()
@@ -203,7 +203,7 @@ def productos(request, accion, id):
             return redirect('productos', accion='crear', id = '0')
     if request.method == 'POST':
         if accion == 'crear':
-            form = ProductoForm(request.POST)
+            form = ProductoForm(request.POST, files=request.FILES)
             if form.is_valid():
                 try:
                     form.save()
@@ -216,7 +216,7 @@ def productos(request, accion, id):
                 messages.error(request, 'Error, mal formulario')
                 return redirect('productos', accion='crear', id='0')
         elif accion == 'actualizar':
-            form = ProductoForm(request.POST, instance=producto)
+            form = ProductoForm(request.POST, files=request.FILES, instance=producto)
             if form.is_valid():
                 try:
                     form.save()
@@ -264,7 +264,7 @@ def usuarios(request, accion, id):
     if request.method == 'POST':
         if accion == 'crear':
             form_usuario = UsuarioForm(request.POST)
-            form_perfil = PerfilForm(request.POST)
+            form_perfil = PerfilForm(request.POST, files=request.FILES)
             if form_usuario.is_valid() and form_perfil.is_valid():
                 try:
                     usuario = form_usuario.save(commit=False)
@@ -281,7 +281,7 @@ def usuarios(request, accion, id):
                 messages.error(request, 'Error, mal formulario')
         elif accion == 'actualizar':
             form_usuario = UsuarioForm(request.POST, instance=usuario)
-            form_perfil = PerfilForm(request.POST, instance=usuario)
+            form_perfil = PerfilForm(request.POST, files=request.FILES, instance=usuario)
             if form_usuario.is_valid() and form_perfil.is_valid():
                 try:
                     form_usuario.save()
