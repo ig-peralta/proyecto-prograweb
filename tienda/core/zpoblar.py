@@ -60,8 +60,8 @@ def crear_usuario(username, tipo, nombre, apellido, correo, es_superusuario,
             usuario.user_permissions.set(permisos)
             usuario.save()
 
-        print(f'    Crear perfil: RUT {rut}, Subscrito {
-              subscrito}, Imagen {imagen}')
+        print(f'''    Crear perfil: RUT {rut}, Subscrito {
+              subscrito}, Imagen {imagen}''')
         Perfil.objects.create(
             usuario=usuario,
             tipo_usuario=tipo,
@@ -504,8 +504,8 @@ def poblar_bd(test_user_email=''):
             boleta.fecha_entrega = fecha_entrega
             boleta.estado = estado
             boleta.save()
-            print(f'    Creada boleta Nro={nro_boleta} Cliente={
-                  cliente.usuario.first_name} {cliente.usuario.last_name}')
+            print(f'''    Creada boleta Nro={nro_boleta} Cliente={
+                  cliente.usuario.first_name} {cliente.usuario.last_name}''')
     print('Boletas creadas correctamente')
 
     print('Agregar productos a bodega')
