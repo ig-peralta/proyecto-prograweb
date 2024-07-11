@@ -7,6 +7,7 @@ from core.models import Categoria, Producto, Carrito, Perfil, Boleta, DetalleBol
 import os
 from django.conf import settings
 
+
 def eliminar_tabla(nombre_tabla):
     conexion = sqlite3.connect('db.sqlite3')
     cursor = conexion.cursor()
@@ -14,12 +15,14 @@ def eliminar_tabla(nombre_tabla):
     conexion.commit()
     conexion.close()
 
+
 def exec_sql(query):
     with connection.cursor() as cursor:
         cursor.execute(query)
 
-def crear_usuario(username, tipo, nombre, apellido, correo, es_superusuario, 
-    es_staff, rut, direccion, subscrito, imagen):
+
+def crear_usuario(username, tipo, nombre, apellido, correo, es_superusuario,
+                  es_staff, rut, direccion, subscrito, imagen):
 
     try:
         print(f'Verificar si existe usuario {username}.')
@@ -28,21 +31,23 @@ def crear_usuario(username, tipo, nombre, apellido, correo, es_superusuario,
             print(f'   Eliminar {username}')
             User.objects.get(username=username).delete()
             print(f'   Eliminado {username}')
-        
+
         print(f'Iniciando creación de usuario {username}.')
 
         usuario = None
         if tipo == 'Superusuario':
             print('    Crear Superuser')
-            usuario = User.objects.create_superuser(username=username, password='123')
+            usuario = User.objects.create_superuser(
+                username=username, password='123')
         else:
             print('    Crear User')
-            usuario = User.objects.create_user(username=username, password='123')
+            usuario = User.objects.create_user(
+                username=username, password='123')
 
         if tipo == 'Administrador':
             print('    Es administrador')
             usuario.is_staff = es_staff
-            
+
         usuario.first_name = nombre
         usuario.last_name = apellido
         usuario.email = correo
@@ -50,13 +55,15 @@ def crear_usuario(username, tipo, nombre, apellido, correo, es_superusuario,
 
         if tipo == 'Administrador':
             print(f'    Dar permisos a core y apirest')
-            permisos = Permission.objects.filter(content_type__app_label__in=['core', 'apirest'])
+            permisos = Permission.objects.filter(
+                content_type__app_label__in=['core', 'apirest'])
             usuario.user_permissions.set(permisos)
             usuario.save()
- 
-        print(f'    Crear perfil: RUT {rut}, Subscrito {subscrito}, Imagen {imagen}')
+
+        print(f'    Crear perfil: RUT {rut}, Subscrito {
+              subscrito}, Imagen {imagen}')
         Perfil.objects.create(
-            usuario=usuario, 
+            usuario=usuario,
             tipo_usuario=tipo,
             rut=rut,
             direccion=direccion,
@@ -66,6 +73,7 @@ def crear_usuario(username, tipo, nombre, apellido, correo, es_superusuario,
     except Exception as err:
         print(f"    Error: {err}")
 
+
 def eliminar_tablas():
     eliminar_tabla('auth_user_groups')
     eliminar_tabla('auth_user_user_permissions')
@@ -74,7 +82,7 @@ def eliminar_tablas():
     eliminar_tabla('auth_permission')
     eliminar_tabla('django_admin_log')
     eliminar_tabla('django_content_type')
-    #eliminar_tabla('django_migrations')
+    # eliminar_tabla('django_migrations')
     eliminar_tabla('django_session')
     eliminar_tabla('Bodega')
     eliminar_tabla('DetalleBoleta')
@@ -83,108 +91,109 @@ def eliminar_tablas():
     eliminar_tabla('Carrito')
     eliminar_tabla('Producto')
     eliminar_tabla('Categoria')
-    #eliminar_tabla('authtoken_token')
+    # eliminar_tabla('authtoken_token')
     eliminar_tabla('auth_user')
+
 
 def poblar_bd(test_user_email=''):
     eliminar_tablas()
 
     crear_usuario(
-        username='cevans',
-        tipo='Cliente', 
-        nombre='Chris', 
-        apellido='Evans', 
-        correo=test_user_email if test_user_email else 'cevans@marvel.com', 
-        es_superusuario=False, 
-        es_staff=False, 
-        rut='25.747.200-0',	
-        direccion='123 Main Street, Los Angeles, \nCalifornia 90001 \nEstados Unidos', 
-        subscrito=True, 
+        username='ocontreras',
+        tipo='Cliente',
+        nombre='Oscar',
+        apellido='Contreras',
+        correo=test_user_email if test_user_email else 'OContreras@correo.com',
+        es_superusuario=False,
+        es_staff=False,
+        rut='25.747.200-0',
+        direccion='Calle santiago, 1234, \nSantiago, \nChile',
+        subscrito=True,
         imagen='perfiles/cevans.jpg')
 
     crear_usuario(
-        username='eolsen',
-        tipo='Cliente', 
-        nombre='Elizabeth', 
-        apellido='Olsen', 
-        correo=test_user_email if test_user_email else 'eolsen@marvel.com', 
-        es_superusuario=False, 
-        es_staff=False, 
-        rut='12.202.357-5', 
-        direccion='Albert Street, New York, \nNew York 10001 \nEstados Unidos', 
-        subscrito=True, 
+        username='jlopez',
+        tipo='Cliente',
+        nombre='Javiera',
+        apellido='Lopez',
+        correo=test_user_email if test_user_email else 'Jlopez@correo.com',
+        es_superusuario=False,
+        es_staff=False,
+        rut='12.202.357-5',
+        direccion='Calle Concepción, 567, \nConcepción, \nChile',
+        subscrito=True,
         imagen='perfiles/eolsen.jpg')
 
     crear_usuario(
-        username='tholland',
-        tipo='Cliente', 
-        nombre='Tom', 
-        apellido='Holland', 
-        correo=test_user_email if test_user_email else 'tholland@marvel.com', 
-        es_superusuario=False, 
-        es_staff=False, 
-        rut='11.991.600-3', 
-        direccion='105 Apple Park Way, \nCupertino, CA 95014 \nEstados Unidos', 
-        subscrito=False, 
+        username='creyes',
+        tipo='Cliente',
+        nombre='Carlos',
+        apellido='Reyes',
+        correo=test_user_email if test_user_email else 'Creyes@correo.com',
+        es_superusuario=False,
+        es_staff=False,
+        rut='11.991.600-3',
+        direccion='Calle Valdivia, 890, \nValdivia, \nChile',
+        subscrito=False,
         imagen='perfiles/tholland.jpg')
 
     crear_usuario(
-        username='sjohansson',
-        tipo='Cliente', 
-        nombre='Scarlett', 
-        apellido='Johansson', 
-        correo=test_user_email if test_user_email else 'sjohansson@marvel.com', 
-        es_superusuario=False, 
-        es_staff=False, 
-        rut='16.469.725-8', 
-        direccion='350 5th Ave, \nNew York, NY 10118 \nEstados Unidos', 
-        subscrito=False, 
+        username='jgonzales',
+        tipo='Cliente',
+        nombre='Jorge',
+        apellido='Gonzales',
+        correo=test_user_email if test_user_email else 'JGonzales@correo.com',
+        es_superusuario=False,
+        es_staff=False,
+        rut='16.469.725-8',
+        direccion='Calle Arica, 456, \nArica, \nChile',
+        subscrito=False,
         imagen='perfiles/sjohansson.jpg')
 
     crear_usuario(
-        username='cpratt',
-        tipo='Administrador', 
-        nombre='Chris', 
-        apellido='Pratt', 
-        correo=test_user_email if test_user_email else 'cpratt@marvel.com', 
-        es_superusuario=False, 
-        es_staff=True, 
-        rut='19.441.980-5', 
-        direccion='10 Pine Road, Miami, \nFlorida 33101 \nEstados Unidos', 
-        subscrito=False, 
+        username='mperez',
+        tipo='Administrador',
+        nombre='María',
+        apellido='Perez',
+        correo=test_user_email if test_user_email else 'MPerez@correo.com',
+        es_superusuario=False,
+        es_staff=True,
+        rut='19.441.980-5',
+        direccion='Calle Santiago, 123, \nSantiago, \nChile',
+        subscrito=False,
         imagen='perfiles/cpratt.jpg')
-    
+
     crear_usuario(
-        username='mruffalo',
-        tipo='Administrador', 
-        nombre='Mark', 
-        apellido='Ruffalo', 
-        correo=test_user_email if test_user_email else 'mruffalo@marvel.com', 
-        es_superusuario=False, 
-        es_staff=True, 
-        rut='21.708.052-5', 
-        direccion='1600 Pennsylvania Avenue NW, \nWashington, D.C. \nEstados Unidos', 
-        subscrito=False, 
+        username='rfuentes',
+        tipo='Administrador',
+        nombre='Roberto',
+        apellido='Fuentes',
+        correo=test_user_email if test_user_email else 'RFuentes@correo.com',
+        es_superusuario=False,
+        es_staff=True,
+        rut='21.708.052-5',
+        direccion='Calle Los pajaritos, 456, \nLos Angeles, \nChile',
+        subscrito=False,
         imagen='perfiles/mruffalo.jpg')
 
     crear_usuario(
         username='super',
         tipo='Superusuario',
-        nombre='Robert',
-        apellido='Downey Jr.',
-        correo=test_user_email if test_user_email else 'rdowneyjr@marvel.com',
+        nombre='Carlos',
+        apellido='Reyes',
+        correo=test_user_email if test_user_email else 'CReyes@correo.com',
         es_superusuario=True,
         es_staff=True,
         rut='13.029.317-4',
-        direccion='15 Oak Street, Los Angeles, \nCalifornia 90001 \nEstados Unidos',
+        direccion='Calle Santiago, 793, \nSantiago, \nChile',
         subscrito=False,
         imagen='perfiles/rdowneyjr.jpg')
-    
+
     categorias_data = [
-        { 'id': 1, 'nombre': 'Acción'},
-        { 'id': 2, 'nombre': 'Aventura'},
-        { 'id': 3, 'nombre': 'Estrategia'},
-        { 'id': 4, 'nombre': 'RPG'},
+        {'id': 1, 'nombre': 'Acción'},
+        {'id': 2, 'nombre': 'Aventura'},
+        {'id': 3, 'nombre': 'Estrategia'},
+        {'id': 4, 'nombre': 'RPG'},
     ]
 
     print('Crear categorías')
@@ -452,7 +461,7 @@ def poblar_bd(test_user_email=''):
             elif estado == 'Despachado':
                 fecha_entrega = None
             boleta = Boleta.objects.create(
-                nro_boleta=nro_boleta, 
+                nro_boleta=nro_boleta,
                 cliente=cliente,
                 monto_sin_iva=0,
                 iva=0,
@@ -495,7 +504,8 @@ def poblar_bd(test_user_email=''):
             boleta.fecha_entrega = fecha_entrega
             boleta.estado = estado
             boleta.save()
-            print(f'    Creada boleta Nro={nro_boleta} Cliente={cliente.usuario.first_name} {cliente.usuario.last_name}')
+            print(f'    Creada boleta Nro={nro_boleta} Cliente={
+                  cliente.usuario.first_name} {cliente.usuario.last_name}')
     print('Boletas creadas correctamente')
 
     print('Agregar productos a bodega')
@@ -506,4 +516,3 @@ def poblar_bd(test_user_email=''):
             Bodega.objects.create(producto=producto)
         print(f'    Agregados {cantidad} "{producto.nombre}" a la bodega')
     print('Productos agregados a bodega')
-
