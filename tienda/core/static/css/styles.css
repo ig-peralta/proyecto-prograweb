@@ -1,3 +1,28 @@
+.card-body{
+    border:#000;
+    background-color: #ccc;
+}
+
+td{
+    color: white;
+}
+
+tr{
+    color: white;
+}
+
+tbody{
+    color: white;
+}
+
+a{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -68,3 +93,7 @@ nav ul li a {
     background-color: rgb(25, 7, 63);
 }
 
+.ficha-img{
+    max-width: 500px;
+    height: fit-content;
+}
