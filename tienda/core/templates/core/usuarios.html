@@ -17,11 +17,7 @@
           </div>
           <!-- AREA DE CUADRO DE IMAGEN: Imagen de perfil (VER COMENTARIO "CUADRO DE IMAGEN" en script.js) -->
           <div>
-            {% if form_perfil.imagen.value %}
-              <img id="cuadro-imagen" class="user-image" src="/media/{{ form_perfil.imagen.value }}">
-            {% else %}
-              <img id="cuadro-imagen" class="user-image" src="{% static 'core/img/sin-imagen.png' %}">
-            {% endif %}
+            <img id="cuadro-imagen" class="user-image" src="/media/{{ form_perfil.imagen.value }}">
           </div>
         </div>
         <!-- AREA DE BOTONES -->
@@ -29,68 +25,70 @@
           <button type="submit" class="btn btn-success"> Guardar </button>
           <a href="{% url 'usuarios' 'crear' '0' %}" class="btn btn-primary"> Nuevo </a>
           <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
-          <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();" class="btn btn-outline-primary"> Seleccionar imagen </button>  
+          <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();"
+            class="btn btn-outline-primary"> Seleccionar imagen </button>
           {% if form_usuario.instance.id %}
-            <a class="btn btn-primary" href="{% url 'usuarios' 'eliminar' form_usuario.instance.id %}"> Eliminar </a>
+          <a class="btn btn-primary" href="{% url 'usuarios' 'eliminar' form_usuario.instance.id %}"> Eliminar </a>
           {% endif %}
         </div>
-      </form>    
+      </form>
     </section>
   </div>
   <hr>
   <div class="overflow-auto ms-auto me-auto text-nowrap mt-2" style="width: 82%;">
     <!--MAIN TABLE-->
-    {% if usuarios %} 
-      <table id="tabla-principal" class="table table-hover">
-        <thead>
-          <tr>
-            <th> ID </th>
-            <th> Cuenta </th>
-            <th> Tipo usuario </th>
-            <th> Nombre </th>
-            <th> Apellidos </th>
-            <th> Correo </th>
-            <th> RUT </th>
-            <th> Subscrito </th>
-            <th> Imagen </th>
-            <th> Acciones </th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for usuario in usuarios %}
-            <tr>
-              <td>{{usuario.id}}</td>
-              <td>{{usuario.username}}</td>
-              <td>{{usuario.perfil.tipo_usuario}}</td>
-              <td>{{usuario.first_name}}</td>
-              <td>{{usuario.last_name}}</td>
-              <td>{{usuario.email}}</td>
-              <td>{{usuario.perfil.rut}}</td>
-              <td> {% if usuario.perfil.subscrito %} Sí {% else %} No {% endif %} </td>
-              <td>
-                <img src="/media/{{ usuario.perfil.imagen }}" width="120px" class="usuario-sm" alt="">
-              </td>
-              <td>
-                <div class="btn-group">
-                  <a href="{% url 'usuarios' 'actualizar' usuario.id %}" class="btn btn-primary btn-sm"> Editar </a>
-                  <a href="{% url 'usuarios' 'eliminar' usuario.id %}" class="btn btn-danger btn-sm"> Eliminar </a>
-                  <form action="{% url 'cambiar_password' %}" method="post" id="form_{{ usuario.username }}">
-                    {% csrf_token %}
-                    <input type="hidden" id="username" name="username" value="{{ usuario.username }}">
-                    <button class="btn btn-info btn-sm" id="id_generar_password" onclick="document.getElementById('form_{{ usuario.username }}').submit();"> Contraseña </button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>  
+    {% if usuarios %}
+    <table id="tabla-principal" class="table table-hover">
+      <thead>
+        <tr>
+          <th> ID </th>
+          <th> Cuenta </th>
+          <th> Tipo usuario </th>
+          <th> Nombre </th>
+          <th> Apellidos </th>
+          <th> Correo </th>
+          <th> RUT </th>
+          <th> Subscrito </th>
+          <th> Imagen </th>
+          <th> Acciones </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+          <td>{{usuario.id}}</td>
+          <td>{{usuario.username}}</td>
+          <td>{{usuario.perfil.tipo_usuario}}</td>
+          <td>{{usuario.first_name}}</td>
+          <td>{{usuario.last_name}}</td>
+          <td>{{usuario.email}}</td>
+          <td>{{usuario.perfil.rut}}</td>
+          <td> {% if usuario.perfil.subscrito %} Sí {% else %} No {% endif %} </td>
+          <td>
+            <img src="/media/{{ usuario.perfil.imagen }}" width="120px" class="usuario-sm" alt="">
+          </td>
+          <td>
+            <div class="btn-group">
+              <a href="{% url 'usuarios' 'actualizar' usuario.id %}" class="btn btn-primary btn-sm"> Editar </a>
+              <a href="{% url 'usuarios' 'eliminar' usuario.id %}" class="btn btn-danger btn-sm"> Eliminar </a>
+              <form action="{% url 'cambiar_password' %}" method="post" id="form_{{ usuario.username }}">
+                {% csrf_token %}
+                <input type="hidden" id="username" name="username" value="{{ usuario.username }}">
+                <button class="btn btn-info btn-sm" id="id_generar_password"
+                  onclick="document.getElementById('form_{{ usuario.username }}').submit();"> Contraseña </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {% endif %}
     <!--MAIN TABLE-->
   </div>
 </main>
 {% endblock content %}
-    
+
 {% block script %}
-  <script src="{% static 'js/usuarios.js' %}"></script>
+<script src="{% static 'js/usuarios.js' %}"></script>
 {% endblock script %}
