@@ -44,11 +44,18 @@ def inicio(request):
     return render(request, 'core/inicio.html', context)
 
 def ficha(request, producto_id):
+    registros = Producto.objects.all().order_by('nombre')
+    productos = []
+    for registro in registros:
+        productos.append(obtener_info_producto(registro.id))
     context = obtener_info_producto(producto_id)
-    context['productos'] = Producto.objects.all()
+    context['productos'] = productos
     return render(request, 'core/ficha.html', context)
 
 def nosotros(request):
+    perfiles = Perfil.objects.all()
+    for perfil in perfiles:
+        print(perfil.rut)
     return render(request, 'core/nosotros.html')
 
 def premio(request):
@@ -194,11 +201,14 @@ def productos(request, accion, id):
         producto = Producto.objects.get(id=id)
         form = ProductoForm(instance=producto)
     if accion == 'eliminar':
+        producto = Producto.objects.get(id=id)
+        print(producto)
         try:
             producto.delete()
             messages.success(request, '¡Producto eliminado con éxito!')
             return redirect('productos', accion='crear', id = '0')
-        except:
+        except Exception as error:
+            print(error)
             messages.error(request, 'Error al eliminar producto')
             return redirect('productos', accion='crear', id = '0')
     if request.method == 'POST':
@@ -281,11 +291,12 @@ def usuarios(request, accion, id):
                 messages.error(request, 'Error, mal formulario')
         elif accion == 'actualizar':
             form_usuario = UsuarioForm(request.POST, instance=usuario)
-            form_perfil = PerfilForm(request.POST, files=request.FILES, instance=usuario)
+            form_perfil = PerfilForm(request.POST, files=request.FILES, instance=usuario.perfil)
             if form_usuario.is_valid() and form_perfil.is_valid():
                 try:
                     form_usuario.save()
                     form_perfil.save()
+                    print(form_perfil)
                     messages.success(request, 'Usuario actualizado con éxito!')
                     return redirect('usuarios', accion='crear', id = '0')
                 except:
