@@ -623,4 +623,4 @@ def poblar(request):
     # del sistema puedan probar el cambio de password de los usuarios, en la página
     # de "Adminstración de usuarios".
     poblar_bd('cri.gomezv@profesor.duoc.cl')
-    return redirect(inicio)
+    return redirect('inicio')

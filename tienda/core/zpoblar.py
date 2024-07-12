@@ -106,10 +106,10 @@ def poblar_bd(test_user_email=''):
         correo=test_user_email if test_user_email else 'OContreras@correo.com',
         es_superusuario=False,
         es_staff=False,
-        rut='25.747.200-0',
+        rut='25747200-0',
         direccion='Calle santiago, 1234, \nSantiago, \nChile',
         subscrito=True,
-        imagen='perfiles/cevans.jpg')
+        imagen='perfiles/Oscar.jpg')
 
     crear_usuario(
         username='jlopez',
@@ -122,7 +122,7 @@ def poblar_bd(test_user_email=''):
         rut='12.202.357-5',
         direccion='Calle Concepción, 567, \nConcepción, \nChile',
         subscrito=True,
-        imagen='perfiles/eolsen.jpg')
+        imagen='perfiles/javiera.jpg')
 
     crear_usuario(
         username='creyes',
@@ -132,10 +132,10 @@ def poblar_bd(test_user_email=''):
         correo=test_user_email if test_user_email else 'Creyes@correo.com',
         es_superusuario=False,
         es_staff=False,
-        rut='11.991.600-3',
+        rut='11991600-3',
         direccion='Calle Valdivia, 890, \nValdivia, \nChile',
         subscrito=False,
-        imagen='perfiles/tholland.jpg')
+        imagen='perfiles/CarlosR.jpg')
 
     crear_usuario(
         username='jgonzales',
@@ -145,10 +145,10 @@ def poblar_bd(test_user_email=''):
         correo=test_user_email if test_user_email else 'JGonzales@correo.com',
         es_superusuario=False,
         es_staff=False,
-        rut='16.469.725-8',
+        rut='16469725-8',
         direccion='Calle Arica, 456, \nArica, \nChile',
         subscrito=False,
-        imagen='perfiles/sjohansson.jpg')
+        imagen='perfiles/Jorge.jpg')
 
     crear_usuario(
         username='mperez',
@@ -158,10 +158,10 @@ def poblar_bd(test_user_email=''):
         correo=test_user_email if test_user_email else 'MPerez@correo.com',
         es_superusuario=False,
         es_staff=True,
-        rut='19.441.980-5',
+        rut='19441980-5',
         direccion='Calle Santiago, 123, \nSantiago, \nChile',
         subscrito=False,
-        imagen='perfiles/cpratt.jpg')
+        imagen='perfiles/maria.jpg')
 
     crear_usuario(
         username='rfuentes',
@@ -171,23 +171,23 @@ def poblar_bd(test_user_email=''):
         correo=test_user_email if test_user_email else 'RFuentes@correo.com',
         es_superusuario=False,
         es_staff=True,
-        rut='21.708.052-5',
+        rut='21708052-5',
         direccion='Calle Los pajaritos, 456, \nLos Angeles, \nChile',
         subscrito=False,
-        imagen='perfiles/mruffalo.jpg')
+        imagen='perfiles/Roberto.jpg')
 
     crear_usuario(
         username='super',
         tipo='Superusuario',
         nombre='Carlos',
-        apellido='Reyes',
+        apellido='Sanchez',
         correo=test_user_email if test_user_email else 'CReyes@correo.com',
         es_superusuario=True,
         es_staff=True,
-        rut='13.029.317-4',
+        rut='13029317-4',
         direccion='Calle Santiago, 793, \nSantiago, \nChile',
         subscrito=False,
-        imagen='perfiles/rdowneyjr.jpg')
+        imagen='perfiles/Carlos.jpg')
 
     categorias_data = [
         {'id': 1, 'nombre': 'Acción'},
@@ -414,7 +414,7 @@ def poblar_bd(test_user_email=''):
     print('Productos creados correctamente')
 
     print('Crear carritos')
-    for rut in ['25.747.200-0', '11.991.600-3']:
+    for rut in ['25747200-0', '11991600-3']:
         cliente = Perfil.objects.get(rut=rut)
         for cantidad_productos in range(1, 11):
             producto = Producto.objects.get(pk=randint(1, 10))
