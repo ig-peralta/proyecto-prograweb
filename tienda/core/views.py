@@ -53,9 +53,6 @@ def ficha(request, producto_id):
     return render(request, 'core/ficha.html', context)
 
 def nosotros(request):
-    perfiles = Perfil.objects.all()
-    for perfil in perfiles:
-        print(perfil.rut)
     return render(request, 'core/nosotros.html')
 
 def premio(request):
@@ -149,7 +146,6 @@ def misdatos(request):
     usuario = request.user
     form_usuario = UsuarioForm(instance=usuario)
     form_perfil = RegistroPerfilForm(instance=usuario.perfil)
-    print(form_perfil)
 
     if request.method == 'POST':
         form_usuario = UsuarioForm(request.POST, instance=usuario)
@@ -203,13 +199,11 @@ def productos(request, accion, id):
         form = ProductoForm(instance=producto)
     if accion == 'eliminar':
         producto = Producto.objects.get(id=id)
-        print(producto)
         try:
             producto.delete()
             messages.success(request, '¡Producto eliminado con éxito!')
             return redirect('productos', accion='crear', id = '0')
         except Exception as error:
-            print(error)
             messages.error(request, 'Error al eliminar producto')
             return redirect('productos', accion='crear', id = '0')
     if request.method == 'POST':
@@ -297,7 +291,6 @@ def usuarios(request, accion, id):
                 try:
                     form_usuario.save()
                     form_perfil.save()
-                    print(form_perfil)
                     messages.success(request, 'Usuario actualizado con éxito!')
                     return redirect('usuarios', accion='crear', id = '0')
                 except:
