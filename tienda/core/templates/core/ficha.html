@@ -1,6 +1,10 @@
 {% extends "core/base.html" %}
 {% load static %}
 
+{% block title %}
+<title>{{nombre}}</title>
+{% endblock %}
+
 {% block content %}
 <div style="min-height: 100vh;">
   <div class="d-flex flex-column mb-5 pb-4 bg-dark text-white">
