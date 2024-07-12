@@ -149,6 +149,7 @@ def misdatos(request):
     usuario = request.user
     form_usuario = UsuarioForm(instance=usuario)
     form_perfil = RegistroPerfilForm(instance=usuario.perfil)
+    print(form_perfil)
 
     if request.method == 'POST':
         form_usuario = UsuarioForm(request.POST, instance=usuario)

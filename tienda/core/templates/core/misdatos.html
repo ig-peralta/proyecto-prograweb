@@ -6,43 +6,44 @@
 <main role="main">
   <div class="container mb-3">
     <section>
-        <h1 class="text-center mt-3">Mis datos</h1>
-        <br>
-        <form id="form" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="row">
-            <div class="col-sm-12 col-md-4">
-              {{form_usuario|as_bootstrap_form:'help_text_visible=False'}}
-            </div>
-            <div class="col-sm-12 col-md-5">
-              {{form_perfil|as_bootstrap_form}}
-            </div>
-            <!-- AREA DE IMAGEN DE PERFIL -->
-            <div class="col-sm-12 col-md-3 text-center">
-              <div class="row">
-                <!-- AREA DE CUADRO DE IMAGEN: Muestra la Imagen de perfil -->
-                <div class="col-sm-12" style="height: 220px">
-                  <img id="cuadro-imagen" class="user-image" src="/media/{{usuario.perfil.imagen}}">
-                </div>
+      <h1 class="text-center mt-3">Mis datos</h1>
+      <br>
+      <form id="form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-12 col-md-4">
+            {{form_usuario|as_bootstrap_form:'help_text_visible=False'}}
+          </div>
+          <div class="col-sm-12 col-md-5">
+            {{form_perfil|as_bootstrap_form}}
+          </div>
+          <!-- AREA DE IMAGEN DE PERFIL -->
+          <div class="col-sm-12 col-md-3 text-center">
+            <div class="row">
+              <!-- AREA DE CUADRO DE IMAGEN: Muestra la Imagen de perfil -->
+              <div class="col-sm-12" style="height: 220px">
+                <img id="cuadro-imagen" class="user-image" src="/media/{{usuario.perfil.imagen}}">
               </div>
             </div>
           </div>
-          <!-- AREA DE BOTONES -->
-          <div class="mt-2 mb-3 text-center">
-            <button type="submit" class="btn btn-primary"> Guardar </button>
-            <!-- Boton para "Limpiar formulario" (VER COMENTARIO "BOTON LIMPIAR FORMULARIO" en script.js) -->
-            <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();" class="btn btn-outline-primary"> Seleccionar imagen </button>
-            <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
-            <button type="reset" id="limpiar_formulario" class="btn btn-secondary"> Limpiar </button>  
-            <!-- Botón para "Crear usuario de prueba" (VER COMENTARIO "CREAR USUARIO DE PRUEBA" en registrarme.js) -->
-            <button id="crear_usuario_prueba" class="btn btn-success"> Crear usuario de prueba </button>
-          </div>
-        </form>
+        </div>
+        <!-- AREA DE BOTONES -->
+        <div class="mt-2 mb-3 text-center">
+          <button type="submit" class="btn btn-primary"> Guardar </button>
+          <!-- Boton para "Limpiar formulario" (VER COMENTARIO "BOTON LIMPIAR FORMULARIO" en script.js) -->
+          <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();"
+            class="btn btn-outline-primary"> Seleccionar imagen </button>
+          <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
+          <button type="reset" id="limpiar_formulario" class="btn btn-secondary"> Limpiar </button>
+          <!-- Botón para "Crear usuario de prueba" (VER COMENTARIO "CREAR USUARIO DE PRUEBA" en registrarme.js) -->
+          <button id="crear_usuario_prueba" class="btn btn-success"> Crear usuario de prueba </button>
+        </div>
+      </form>
     </section>
   </div>
 </main>
 {% endblock content %}
 
 {% block script %}
-  <script src="{% static 'core/js/misdatos.js' %}"></script>
+<script src="{% static 'js/misdatos.js' %}"></script>
 {% endblock script %}

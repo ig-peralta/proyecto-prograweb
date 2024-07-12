@@ -22,6 +22,7 @@ def formatear_dinero(value):
 def formatear_porcentaje(value):
     return f'{value}%'
 
+
 @register.filter
 def formatear_fecha(value):
     if value == None:

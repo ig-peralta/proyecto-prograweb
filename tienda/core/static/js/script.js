@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
 
@@ -6,15 +6,15 @@ $(document).ready(function() {
   // Ver sitio web https://datatables.net/
   if ($('#tabla-principal').length > 0) {
     var table = new DataTable('#tabla-principal', {
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
-        },
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+      },
     });
   }
 
   // BOTON LIMPIAR FORMULARIO: Permite limpiar el formulario y las validaciones en rojo si las hubiera
   if ($('#limpiar_formulario').length > 0) {
-    $('#limpiar_formulario').click(function(event) {
+    $('#limpiar_formulario').click(function (event) {
       $("#form").validate().resetForm();
     });
   }
@@ -47,11 +47,11 @@ $(document).ready(function() {
   // BOTON DE SELECCIONAR IMAGEN: Cuando se selecciona una nueva imagen usando el botón,
   // entonces se carga la imagen en el tag "img" que tiene el id "cuadro-imagen" 
   if ($('#id_imagen').length > 0) {
-    $('#id_imagen').change(function() {
+    $('#id_imagen').change(function () {
       var input = this;
       if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           $('#cuadro-imagen').attr('src', e.target.result).show();
         };
         reader.readAsDataURL(input.files[0]);
@@ -69,76 +69,62 @@ $(document).ready(function() {
   };
 
   // AGREGAR METODO DE VALIDACION PARA EL RUT (ROL UNICO TRIBUTARIO) DE CHILE
-  $.validator.addMethod("rutChileno", function(value, element) {
-    // Eliminar puntos y guión del RUT
-    value = value.replace(/[.-]/g, "");
-
-    // Validar que el RUT tenga 8 o 9 dígitos
-    if (value.length < 8 || value.length > 9) {
+  $.validator.addMethod("rutChileno", (value) => {
+    var rutPattern = /^\d{7,8}-[\dK]$/;
+    if (!rutPattern.test(value)) {
       return false;
     }
-
-    // Validar que el último dígito sea un número o una 'K'
-    var validChars = "0123456789K";
-    var lastChar = value.charAt(value.length - 1).toUpperCase();
-    if (validChars.indexOf(lastChar) == -1) {
-      return false;
-    }
-
-    // Calcular el dígito verificador
-    var rut = parseInt(value.slice(0, -1), 10);
+    var rutSinGuion = value.replace("-", "");
+    var rut = rutSinGuion.slice(0, -1);
+    var dv = rutSinGuion.slice(-1);
     var factor = 2;
     var sum = 0;
-    var digit;
-    while (rut > 0) {
-      digit = rut % 10;
-      sum += digit * factor;
-      rut = Math.floor(rut / 10);
+    for (var i = rut.length - 1; i >= 0; i--) {
+      sum += parseInt(rut.charAt(i)) * factor;
       factor = factor === 7 ? 2 : factor + 1;
     }
-    var dv = 11 - (sum % 11);
-    dv = dv === 11 ? "0" : dv === 10 ? "K" : dv.toString();
+    var dvCalculado = 11 - (sum % 11);
+    dvCalculado = dvCalculado === 11 ? "0" : dvCalculado === 10 ? "K" : dvCalculado.toString();
+    return dv === dvCalculado;
+  }, "El RUT no es válido (escriba sin puntos y con guión)");
 
-    // Validar que el dígito verificador sea correcto
-    return dv === lastChar;
-  }, "Por favor ingrese un RUT válido.");
 
-    // Obliga a que la caja de texto del rut, siempre escriba la letra "K" en mayúscula y elimine los puntos
-    if(document.getElementById('id_rut')){
-      document.getElementById('id_rut').addEventListener('keyup', function(e) {
-        e.target.value = e.target.value.toUpperCase();
-        for (let i = 0; i < e.target.value.length; i++) {
-          const caracter = e.target.value[i];
-          if (!"0123456789kK-".includes(caracter)) {
-            e.target.value = e.target.value.replace(caracter, "");
-          }
+  // Obliga a que la caja de texto del rut, siempre escriba la letra "K" en mayúscula y elimine los puntos
+  if (document.getElementById('id_rut')) {
+    document.getElementById('id_rut').addEventListener('keyup', function (e) {
+      e.target.value = e.target.value.toUpperCase();
+      for (let i = 0; i < e.target.value.length; i++) {
+        const caracter = e.target.value[i];
+        if (!"0123456789kK-".includes(caracter)) {
+          e.target.value = e.target.value.replace(caracter, "");
         }
-      });
-    }
+      }
+    });
+  }
 
-    // Agregar método de validación para correo
-    $.validator.addMethod("emailCompleto", function(value, element) {
+  // Agregar método de validación para correo
+  $.validator.addMethod("emailCompleto", function (value, element) {
 
-      // Expresión regular para validar correo electrónico
-      var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z\-0-9]{2,}))$/;
+    // Expresión regular para validar correo electrónico
+    var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z\-0-9]{2,}))$/;
 
-      // Validar correo electrónico con la expresión regular
-      return regex.test(value);
+    // Validar correo electrónico con la expresión regular
+    return regex.test(value);
 
-    }, 'El formato del correo no es válido');
-    
-    // Agregar método de validación para que un campo sólo acepte 
-    // letras y espacios en blanco, pero no números ni símbolos,
-    // ideal para campos como nombres y apellidos
-    $.validator.addMethod("soloLetras", function(value, element) {
+  }, 'El formato del correo no es válido');
 
-      return this.optional(element) || /^[a-zA-Z\s]*$/.test(value);
+  // Agregar método de validación para que un campo sólo acepte 
+  // letras y espacios en blanco, pero no números ni símbolos,
+  // ideal para campos como nombres y apellidos
+  $.validator.addMethod("soloLetras", function (value, element) {
 
-    }, "Sólo se permiten letras y espacios en blanco.");
+    return this.optional(element) || /^[a-zA-Z\s]*$/.test(value);
+
+  }, "Sólo se permiten letras y espacios en blanco.");
 
   // AGREGAR METODO DE VALIDACION PARA REVISAR SI UN VALOR SE ENCUENTRA DENTRO DE UNA LISTA DEFINIDA
   // POR EJEMPLO PARA REVISAR SI EL TIPO DE USUARIO ESTÁ DENTRO DE LA LISTA ['Administrador', 'Superusuario']
-  $.validator.addMethod("inList", function(value, element, param) {
+  $.validator.addMethod("inList", function (value, element, param) {
     return $.inArray(value, param) !== -1;
   }, "Por favor, selecciona un valor válido.");
 
