@@ -34,7 +34,10 @@
         <tr>
           <th> Imagen </th>
           <th> Nombre </th>
+          <th> Categoría </th>
           <th> Precio </th>
+          <th> Descuento oferta</th>
+          <th> Descuento subscriptor</th>
           <th> Estado </th>
           <th> Acción </th>
         </tr>
@@ -47,7 +50,10 @@
             <img src="/media/{{ producto.imagen }}" class="producto-sm" alt="" width="100px">
           </td>
           <td>{{producto.nombre_producto}}</td>
+          <td>{{producto.categoria}}</td>
           <td>{{producto.precio_producto|formatear_dinero}}</td>
+          <td>{{producto.descuento_subscriptor|formatear_porcentaje}}</td>
+          <td>{{producto.descuento_oferta|formatear_porcentaje}}</td>
           <td>{{producto.estado}}</td>
           <!-- Botón de eliminar producto de bodega, se activa sólo para productos no vendidos -->
           <td>

@@ -20,17 +20,16 @@
             {{form_perfil|as_bootstrap_form}}
           </div>
           <!-- AREA DE CUADRO DE IMAGEN: Imagen de perfil (VER COMENTARIO "CUADRO DE IMAGEN" en script.js) -->
-          <div>
+          <div class="d-flex flex-column align-items-center">
             <img id="cuadro-imagen" class="user-image" src="/media/{{ form_perfil.imagen.value }}">
+            <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();" class="btn btn-secondary"> Seleccionar imagen </button>
           </div>
         </div>
         <!-- AREA DE BOTONES -->
         <div class="mt-2 text-center">
-          <button type="submit" class="btn btn-success"> Guardar </button>
-          <a href="{% url 'usuarios' 'crear' '0' %}" class="btn btn-primary"> Nuevo </a>
+          <button type="submit" class="btn btn-primary"> Guardar </button>
+          <a href="{% url 'usuarios' 'crear' '0' %}" class="btn btn-success"> Nuevo </a>
           <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
-          <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();"
-            class="btn btn-outline-primary"> Seleccionar imagen </button>
           {% if form_usuario.instance.id %}
           <a class="btn btn-primary" href="{% url 'usuarios' 'eliminar' form_usuario.instance.id %}"> Eliminar </a>
           {% endif %}
