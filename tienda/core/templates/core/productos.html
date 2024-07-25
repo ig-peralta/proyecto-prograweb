@@ -24,20 +24,21 @@
             {{form.descuento_oferta|as_bootstrap_field}}
           </div>
           <!-- AREA DE CUADRO DE IMAGEN: Imagen del producto (VER COMENTARIO "CUADRO DE IMAGEN" en script.js) -->
-          <div class="w-25">
+          <div class="w-25 d-flex flex-column align-items-center">
             {% if form.imagen.value %}
               <img id="cuadro-imagen" class="w-100" src="/media/{{form.imagen.value}}">
+              <button class="btn btn-secondary" onclick="event.preventDefault(); document.getElementById('id_imagen').click();"> Seleccionar imagen </button>  
             {% else %}
               <img id="cuadro-imagen" class="w-100" src="{% static 'img/sin-imagen.png' %}">
+              <button class="btn btn-secondary" onclick="event.preventDefault(); document.getElementById('id_imagen').click();"> Seleccionar imagen </button>  
             {% endif %}
             {{ form.imagen|as_bootstrap_field }}
           </div>
         </div>
         <div class="mt-2 mb-4 text-center mx-auto">
-          <input class="btn btn-success" type="submit" value="Guardar">
-          <a class="btn btn-primary" href="{% url 'productos' 'crear' '0' %}"> Nuevo </a>    
+          <input class="btn btn-primary" type="submit" value="Guardar">
+          <a class="btn btn-success" href="{% url 'productos' 'crear' '0' %}"> Nuevo </a>    
           <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
-          <button class="btn btn-outline-primary" onclick="event.preventDefault(); document.getElementById('id_imagen').click();"> Seleccionar imagen </button>  
           {% if form.instance.id %}
             <a class="btn btn-danger"  href="{% url 'productos' 'eliminar' form.instance.id %}"> Eliminar </a>
           {% endif %}
@@ -75,7 +76,7 @@
               <img src="/media/{{ producto.imagen }}" class="producto-sm" alt="" width="100px">
             </td>
             <td>
-              <a href="{% url 'productos' 'actualizar' producto.id %}" class="btn btn-primary btn-sm"> Editar </a>
+              <a href="{% url 'productos' 'actualizar' producto.id %}" class="btn btn-outline-primary btn-sm"> Editar </a>
             </td>
             <td>
               <form method="delete">

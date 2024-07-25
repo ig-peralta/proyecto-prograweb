@@ -13,16 +13,18 @@
     <h1 class="mb-5">Historial de ventas</h1>
   </div>
   <!--TITLE-->
-  <div class="w-75 overflow-auto">
+  <div class="overflow-auto">
     <!--MAIN TABLE-->
     <table table id="tabla-principal" class="table table-hover">
       <thead>
         <tr>
           <th scope="col">Nro Boleta</th>
-          <th scope="col">Fecha</th>
           <th scope="col">Nombre cliente</th>
+          <th scope="col">Fecha venta</th>
+          <th scope="col">Fecha despacho</th>
+          <th scope="col">Fecha entrega</th>
           <th scope="col">Suscrito</th>
-          <th scope="col">Monto total</th>
+          <th scope="col">Total a pagar</th>
           <th scope="col">Estado actual</th>
           <th scope="col">Detalle</th>
           <th scope="col">Opciones</th>
@@ -35,25 +37,28 @@
           {% else %}
             <tr>
               <td>{{boleta.nro_boleta}}</td>
-              <td>{{boleta.nom_cliente}}</td>
+              <td>{{boleta.cliente.usuario.first_name}} {{boleta.cliente.usuario.last_name}}</td>
               <td>{{boleta.fecha_venta|formatear_fecha}}</td>
               <td>{{boleta.fecha_despacho|formatear_fecha}}</td>
               <td>{{boleta.fecha_entrega|formatear_fecha}}</td>
-              <td>{{boleta.subscrito}}</td>
+              <td>{% if boleta.cliente.subscrito %} Sí {% else %} No {% endif %}</td>
               <td>{{boleta.total_a_pagar|formatear_dinero}}</td>
               <td>{{boleta.estado}}</td>
               <td>
                 <a href="{% url 'boleta' boleta.nro_boleta %}" class="btn btn-sm btn-primary">Detalle</a>
               </td> 
               <td>
-                <span>
-                  <div class="btn-group">
-                    <a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Anulado' %}" class="btn btn-sm btn-danger">Anular</a>
-                    <a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Vendido' %}" class="btn btn-sm btn-success">Vender</a>
-                    <a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Despachado' %}" class="btn btn-sm btn-primary">Despachar</a>
-                    <a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Entregado' %}" class="btn btn-sm btn-secondary">Entregar</a>
-                  </div>
-                </span>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Opciones
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Anulado' %}" class="dropdown-item btn btn-sm btn-danger">Anular</a></li>
+                    <li><a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Vendido' %}" class="dropdown-item btn btn-sm btn-success">Vender</a></li>
+                    <li><a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Despachado' %}" class="dropdown-item btn btn-sm btn-primary">Despachar</a></li>
+                    <li><a href="{% url 'cambiar_estado_boleta' boleta.nro_boleta 'Entregado' %}" class="dropdown-item btn btn-sm btn-secondary">Entregar</a></li>
+                  </ul>
+                </div>
               </td>
             </tr>
           {% endif %}
