@@ -1,3 +1,40 @@
+body{
+    background-color: #0056b3;
+}
+
+.card-body{
+    border:#000;
+    background-color: #ccc;
+}
+
+td{
+    color: white;
+}
+
+tr{
+    color: white;
+}
+
+tbody{
+    color: white;
+}
+
+a.btn.btn-primary{
+    background-color: green;
+}
+
+a.btn.btn-outline-primary{
+    background-color: green;
+}
+
+a{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
 nav ul {
     list-style-type: none;
     padding: 0;
