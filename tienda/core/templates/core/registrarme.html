@@ -27,19 +27,17 @@
               <!-- AREA DE CUADRO DE IMAGEN: Muestra la Imagen de perfil -->
               <div class="col-sm-12" style="height: 220px">
                 <img id="cuadro-imagen" class="user-image" src="{% static 'img/user_profile.png' %}">
+                <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();"class="btn btn-secondary"> Seleccionar imagen </button>
               </div>
             </div>
           </div>
         </div>
         <!-- AREA DE BOTONES -->
         <div class="mt-2 mb-3 text-center">
-          <button type="submit" class="btn btn-primary"> Registrarme </button>
+          <button type="submit" class="btn btn-primary w-25"> Registrarme </button>
           <!-- Boton para "Limpiar formulario" (VER COMENTARIO "BOTON LIMPIAR FORMULARIO" en script.js) -->
-          <button onclick="event.preventDefault(); document.getElementById('id_imagen').click();" class="btn btn-outline-primary"> Seleccionar imagen </button>
-          <!-- AREA DE BOTON DE SELECCIONAR IMAGEN: Reemplaza el botón "Seleccionar archivo" por otro con Bootstrap (VER COMENTARIO "BOTON IMAGEN" en script.js) -->
-          <button type="reset" id="limpiar_formulario" class="btn btn-secondary"> Limpiar </button>  
+          <button type="reset" id="limpiar_formulario" class="btn btn-outline-secondary"> Limpiar </button>  
           <!-- Botón para "Crear usuario de prueba" (VER COMENTARIO "CREAR USUARIO DE PRUEBA" en registrarme.js) -->
-          <button id="crear_usuario_prueba" class="btn btn-success"> Crear usuario de prueba </button>
         </div>
       </form>
     </section>

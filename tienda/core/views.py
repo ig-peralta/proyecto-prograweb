@@ -340,7 +340,10 @@ def bodega(request):
             'bodega_id': registro.id,
             'nombre_categoria': registro.producto.categoria.nombre,
             'nombre_producto': registro.producto.nombre,
+            'categoria': registro.producto.categoria,
             'precio_producto': registro.producto.precio,
+            'descuento_subscriptor': registro.producto.descuento_subscriptor,
+            'descuento_oferta': registro.producto.descuento_oferta,
             'estado': 'Vendido' if vendido else 'En bodega',
             'imagen': registro.producto.imagen,
         }
